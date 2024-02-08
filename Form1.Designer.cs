@@ -30,14 +30,15 @@
         {
             this.comboBox_PaginasWeb = new System.Windows.Forms.ComboBox();
             this.button_ir = new System.Windows.Forms.Button();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.nAVEGARToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inicioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.haciaAdelanteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.haciaAtrasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.webView2 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView2)).BeginInit();
             this.SuspendLayout();
             // 
             // comboBox_PaginasWeb
@@ -61,14 +62,6 @@
             this.button_ir.Text = "IR";
             this.button_ir.UseVisualStyleBackColor = false;
             this.button_ir.Click += new System.EventHandler(this.button_ir_Click);
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.Location = new System.Drawing.Point(64, 108);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(984, 593);
-            this.webBrowser1.TabIndex = 2;
             // 
             // menuStrip1
             // 
@@ -99,6 +92,7 @@
             this.inicioToolStripMenuItem.Name = "inicioToolStripMenuItem";
             this.inicioToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.inicioToolStripMenuItem.Text = "Inicio";
+            this.inicioToolStripMenuItem.Click += new System.EventHandler(this.inicioToolStripMenuItem_Click);
             // 
             // haciaAdelanteToolStripMenuItem
             // 
@@ -121,21 +115,34 @@
             this.salirToolStripMenuItem.Text = "Salir";
             this.salirToolStripMenuItem.Click += new System.EventHandler(this.salirToolStripMenuItem_Click);
             // 
+            // webView2
+            // 
+            this.webView2.AllowExternalDrop = true;
+            this.webView2.CreationProperties = null;
+            this.webView2.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView2.Location = new System.Drawing.Point(64, 115);
+            this.webView2.Name = "webView2";
+            this.webView2.Size = new System.Drawing.Size(960, 519);
+            this.webView2.Source = new System.Uri("https://www.bing.com/?setlang=es", System.UriKind.Absolute);
+            this.webView2.TabIndex = 4;
+            this.webView2.ZoomFactor = 1D;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.MistyRose;
+            this.BackColor = System.Drawing.Color.PaleGoldenrod;
             this.ClientSize = new System.Drawing.Size(1116, 749);
-            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.webView2);
             this.Controls.Add(this.button_ir);
             this.Controls.Add(this.comboBox_PaginasWeb);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "NAVEGADOR";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -145,13 +152,13 @@
 
         private System.Windows.Forms.ComboBox comboBox_PaginasWeb;
         private System.Windows.Forms.Button button_ir;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem nAVEGARToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem inicioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem haciaAdelanteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem haciaAtrasToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem salirToolStripMenuItem;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView2;
     }
 }
 

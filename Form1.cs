@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Web.WebView2.Core; 
+
 
 namespace NavegadorWeb
 {
@@ -20,12 +22,11 @@ namespace NavegadorWeb
             comboBox_PaginasWeb.Items.Add("https://es.wikipedia.org/wiki/Wikipedia:Portada");
             comboBox_PaginasWeb.Items.Add("https://www.youtube.com/");
             comboBox_PaginasWeb.Items.Add("https://www.bing.com/?setlang=es");
+            comboBox_PaginasWeb.Items.Add("https://www.google.com.gt/?hl=es");
 
 
             //Selecciona el primer Item por defecto
-            comboBox_PaginasWeb.SelectedIndex = 1;
-
-
+            comboBox_PaginasWeb.SelectedIndex = 4;
 
         }
 
@@ -33,13 +34,12 @@ namespace NavegadorWeb
 
         {
 
-            //Mostrar la primera pagina por defecto
-            if (comboBox_PaginasWeb.SelectedIndex != -1)
+            // Navegar a la página seleccionada
+            if (comboBox_PaginasWeb.SelectedIndex != -1 && webView2.CoreWebView2 != null)
             {
                 var url = comboBox_PaginasWeb.SelectedItem.ToString();
-                webBrowser1.Navigate(url);
+                webView2.CoreWebView2.Navigate(url);
             }
-
         }
 
         private void button_ir_Click(object sender, EventArgs e)
@@ -51,9 +51,9 @@ namespace NavegadorWeb
 
             // Verifica si la URL comienza con "http://" o "https://", si no añade "https://" para que la pagina funcione
             if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
-                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase)&& !url.StartsWith(".",StringComparison.OrdinalIgnoreCase))
             {
-                url = "https://" + url;
+                url = " " + url;
             }
             if (!url.StartsWith("https://www.google.com/search?q=", StringComparison.OrdinalIgnoreCase))
             {
@@ -61,7 +61,7 @@ namespace NavegadorWeb
             }
 
 
-            webBrowser1.Navigate(url);
+            webView2.CoreWebView2.Navigate(url); 
 
         }
 
@@ -74,9 +74,9 @@ namespace NavegadorWeb
         {
             //Regresar a la pagina anterior
             //Con CanGoback verifica si podemos regresar 
-            if (webBrowser1.CanGoBack)
+            if (webView2.CoreWebView2.CanGoBack)
             {
-                webBrowser1.GoBack();
+                webView2.CoreWebView2.GoBack();
             }
 
         }
@@ -84,17 +84,32 @@ namespace NavegadorWeb
         private void haciaAdelanteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Ir a la pagina siguiente
-            if (webBrowser1.CanGoForward)
+            if (webView2.CoreWebView2.CanGoForward)
             {
-                webBrowser1.GoForward();    
+                webView2.CoreWebView2.GoForward();
             }
-            
+
         }
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Salir de la pagina
             this.Close();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void inicioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            webView2.CoreWebView2.Navigate("https://www.google.com.gt/?hl=es");
         }
     }
 }
