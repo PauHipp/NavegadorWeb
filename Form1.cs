@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Web.WebView2.Core; 
+using Microsoft.Web.WebView2.Core;
+using System.IO;
+using System.Web; //(Input, Output)
 
 
 namespace NavegadorWeb
@@ -18,28 +20,33 @@ namespace NavegadorWeb
         {
             InitializeComponent();
 
-            comboBox_PaginasWeb.Items.Add("https://espanol.yahoo.com/");
-            comboBox_PaginasWeb.Items.Add("https://es.wikipedia.org/wiki/Wikipedia:Portada");
-            comboBox_PaginasWeb.Items.Add("https://www.youtube.com/");
-            comboBox_PaginasWeb.Items.Add("https://www.bing.com/?setlang=es");
-            comboBox_PaginasWeb.Items.Add("https://www.google.com.gt/?hl=es");
+            //comboBox_PaginasWeb.Items.Add("https://espanol.yahoo.com/");
+            //comboBox_PaginasWeb.Items.Add("https://es.wikipedia.org/wiki/Wikipedia:Portada");
+            //comboBox_PaginasWeb.Items.Add("https://www.youtube.com/");
+            //comboBox_PaginasWeb.Items.Add("https://www.bing.com/?setlang=es");
+            //comboBox_PaginasWeb.Items.Add("https://www.google.com.gt/?hl=es");
+
+
 
 
             //Selecciona el primer Item por defecto
-            comboBox_PaginasWeb.SelectedIndex = 4;
+            //comboBox_PaginasWeb.SelectedIndex = 4;
 
+        }
+        private void Guardar(string fileName, string texto)
+        {
+            FileStream stream = new FileStream(fileName, FileMode.Append, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(stream);
+            writer.WriteLine(texto);
+            writer.Close();
         }
 
         private void comboBox_PaginasWeb_SelectedIndexChanged(object sender, EventArgs e)
 
         {
 
-            // Navegar a la página seleccionada
-            if (comboBox_PaginasWeb.SelectedIndex != -1 && webView2.CoreWebView2 != null)
-            {
-                var url = comboBox_PaginasWeb.SelectedItem.ToString();
-                webView2.CoreWebView2.Navigate(url);
-            }
+            
+            
         }
 
         private void button_ir_Click(object sender, EventArgs e)
@@ -51,7 +58,7 @@ namespace NavegadorWeb
 
             // Verifica si la URL comienza con "http://" o "https://", si no añade "https://" para que la pagina funcione
             if (!url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) &&
-                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase)&& !url.StartsWith(".",StringComparison.OrdinalIgnoreCase))
+                !url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) && !url.StartsWith(".", StringComparison.OrdinalIgnoreCase))
             {
                 url = " " + url;
             }
@@ -61,7 +68,19 @@ namespace NavegadorWeb
             }
 
 
-            webView2.CoreWebView2.Navigate(url); 
+            webView2.CoreWebView2.Navigate(url);
+
+            //Codigo para guardar el historial
+
+            if (!comboBox_PaginasWeb.Items.Contains(url))
+            {
+                comboBox_PaginasWeb.Items.Add(url); // Agrega la URL al ComboBox del historial
+                Guardar(@"C:\Users\paula\OneDrive\Escritorio\Historial.txt", comboBox_PaginasWeb.Text); // Guarda la URL en el archivo de historial
+
+                comboBox_PaginasWeb.Items.Clear();
+                leer();
+            }
+           
 
         }
 
@@ -99,7 +118,8 @@ namespace NavegadorWeb
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+       
+            leer();
         }
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -111,5 +131,24 @@ namespace NavegadorWeb
         {
             webView2.CoreWebView2.Navigate("https://www.google.com.gt/?hl=es");
         }
+        
+        private void leer()
+        {
+            //aca debe mostral el historial de las paginas visitadas anteriormente
+            string fileName = (@"C:\Users\paula\OneDrive\Escritorio\Historial.txt");
+
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream);
+
+            while (reader.Peek() > -1)
+
+            {
+                string textoleido = reader.ReadLine();
+                comboBox_PaginasWeb.Items.Add(textoleido);  
+            }
+            //Cerrar el archivo, esta linea es importante porque sino despues de correr varias veces el programa daría error de que el archivo quedó abierto muchas veces. Entonces es necesario cerrarlo despues de terminar de leerlo.
+            reader.Close();
+        }
+
     }
 }
